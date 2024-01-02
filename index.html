@@ -4,18 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/2.3.0/aframe/build/aframe-ar.js"></script>
     <title>AR DNA Model with Camera Feed</title>
 </head>
 <body>
     <a-scene embedded arjs>
         <!-- Camera Feed -->
         <a-entity camera></a-entity>
+        <a-entity
+            aframe-injected=""
+            artoolkit-api=""
+            artoolkit-kernel=""> 
+            <a-video 
+                rotation="-90 0 0"
+                position="0 0 0"
+                scale="2 2 2">
+            </a-video>
+        </a-entity>
 
         <!-- 3D DNA Model -->
         <a-gltf-model
             src="path/to/your/dna_model.glb"
             scale="0.1 0.1 0.1"
-            position="0 0 -4">
+            position="0 2 -4">
         </a-gltf-model>
     </a-scene>
 
@@ -23,14 +34,8 @@
         // Access the rear-facing camera
         navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
             .then(function (stream) {
-                var video = document.createElement('video');
-                video.srcObject = stream;
-                video.play();
-
-                var scene = document.querySelector('a-scene');
-                var cameraEntity = document.querySelector('a-entity[camera]');
-
-                cameraEntity.appendChild(video);
+                var video = document.querySelector('a-video');
+                video.components.material.material.map.image = stream;
             })
             .catch(function (error) {
                 console.error('Error accessing camera:', error);
