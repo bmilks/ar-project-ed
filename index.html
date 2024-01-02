@@ -7,32 +7,30 @@
     <title>AR DNA Model with Camera Feed</title>
 </head>
 <body>
-    <a-scene embedded>
+    <a-scene embedded arjs>
         <!-- Camera Feed -->
-        <a-video
-            id="camera-feed"
-            rotation="-90 0 0"
-            position="0 0 0"
-            scale="2 2 2">
-        </a-video>
+        <a-entity camera></a-entity>
 
         <!-- 3D DNA Model -->
         <a-gltf-model
-            src="dna.glb"
+            src="path/to/your/dna_model.glb"
             scale="0.1 0.1 0.1"
-            position="0 2 -4">
+            position="0 0 -4">
         </a-gltf-model>
-
-        <!-- Camera -->
-        <a-entity camera look-controls></a-entity>
     </a-scene>
 
     <script>
         // Access the rear-facing camera
         navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
             .then(function (stream) {
-                var cameraFeed = document.getElementById('camera-feed');
-                cameraFeed.srcObject = stream;
+                var video = document.createElement('video');
+                video.srcObject = stream;
+                video.play();
+
+                var scene = document.querySelector('a-scene');
+                var cameraEntity = document.querySelector('a-entity[camera]');
+
+                cameraEntity.appendChild(video);
             })
             .catch(function (error) {
                 console.error('Error accessing camera:', error);
