@@ -35,7 +35,10 @@
         navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
             .then(function (stream) {
                 var video = document.querySelector('a-video');
-                video.components.material.material.map.image = stream;
+                video.components.material.material.map = new THREE.VideoTexture(stream);
+                video.components.material.material.map.minFilter = THREE.LinearFilter;
+                video.components.material.material.map.magFilter = THREE.LinearFilter;
+                video.components.material.material.map.needsUpdate = true;
             })
             .catch(function (error) {
                 console.error('Error accessing camera:', error);
