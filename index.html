@@ -9,8 +9,8 @@
     <video id="camera-feed" autoplay playsinline style="width: 100%; height: 100%;"></video>
 
     <script>
-        // Access the camera feed
-        navigator.mediaDevices.getUserMedia({ video: true })
+        // Access the rear-facing camera
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
             .then(function (stream) {
                 var video = document.getElementById('camera-feed');
                 video.srcObject = stream;
